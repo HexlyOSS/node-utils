@@ -23,8 +23,8 @@ jobs:
           git config user.name $GITHUB_ACTOR
           git config user.email gh-actions-${GITHUB_ACTOR}@github.com
       - run: git describe --exact-match --tags $(git log -n1 --pretty='%h') | xargs npm version --allow-same-version
-      - run: npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
-      - run: npm install
-      - run: npm publish
+      - run: npm config set "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN"
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPMJS_PUBLISH_SECRET}}
+      - run: npm install
+      - run: npm publish
