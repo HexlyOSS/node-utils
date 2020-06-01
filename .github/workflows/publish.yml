@@ -16,6 +16,12 @@ jobs:
           node-version: 12
           # registry-url: https://npm.pkg.github.com/
           scope: '@hexlyoss'
+      - name: version and publish
+        env:
+          GITHUB_ACTOR: hexlyoss
+        run: |
+          git config user.name $GITHUB_ACTOR
+          git config user.email gh-actions-${GITHUB_ACTOR}@github.com
       - run: git describe --exact-match --tags $(git log -n1 --pretty='%h') | xargs npm version --allow-same-version
       - run: npm install
       - run: npm publish
