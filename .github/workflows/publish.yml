@@ -1,0 +1,23 @@
+name: NPM (GitHub) Publish
+
+on:
+  release:
+    types: [created]
+
+# on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          # registry-url: https://npm.pkg.github.com/
+          scope: '@hexlyoss'
+      - run: npm install
+      - run: git describe --exact-match --tags $(git log -n1 --pretty='%h') | xargs npm version --allow-same-version
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPMJS_PUBLISH_SECRET}}
